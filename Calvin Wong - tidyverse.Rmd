@@ -1,0 +1,43 @@
+---
+title: "Tidyverse Problem"
+author: "Calvin Wong"
+date: "12/6/2018"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(dplyr)
+
+url <- "https://raw.githubusercontent.com/rudeboybert/fivethirtyeight/master/data-raw/us-weather-history/KCLT.csv"
+temp <- read.csv(url, header = TRUE)
+```
+
+###Let's see how the dateset looks
+
+```{r}
+str(temp)
+```
+
+###Let's run some queries
+
+Here I want to see what record temperatures were over 103 degrees.
+
+```{r}
+filter(temp, record_max_temp > 103)
+```
+
+Here I want to see what precipitation was like and arranged the data in descending order by record_percipitation.
+
+```{r}
+select(temp, date, average_precipitation, record_precipitation) %>% arrange(desc(record_precipitation))
+```
+
+Let's find the average record temperatures and order by descending average record temperature.
+
+```{r}
+mutate(temp, record_average_temp = (record_min_temp + record_min_temp)/2) %>% 
+  select(date, record_average_temp) %>% 
+  arrange(desc(record_average_temp))
+```
+
